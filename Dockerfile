@@ -15,7 +15,7 @@ ENV password_ssh="docker"
 RUN (apt-get update && apt-get upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
  
 # Installation des paquets de base
-RUN apt-get install -y -q wget nano zip openssh-server
+RUN apt-get install -y -q wget nano zip openssh-server git
 
 # Ajout du depot Zend Server
 RUN echo "deb http://repos.zend.com/zend-server/9.0/deb_apache2.4 server non-free" >> /etc/apt/sources.list
