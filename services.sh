@@ -1,2 +1,2 @@
 service ssh start
-service mysql start
+service zend-server start
