@@ -15,7 +15,7 @@ ENV password_ssh="docker"
 RUN (apt-get update && apt-get upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
  
 # Installation des paquets de base
-RUN apt-get install -y -q wget nano zip openssh-server git nodejs npm
+RUN apt-get install -y -q wget nano sudo zip openssh-server git nodejs npm
 
 # Ajout des liens symboliques pour nodeJs
 RUN ln -s /usr/bin/nodejs /usr/local/bin/node
