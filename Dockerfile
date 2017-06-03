@@ -32,7 +32,7 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_s
 RUN echo "${login_ssh}:${password_ssh}" | chpasswd
 
 # Ports
-EXPOSE 22  80
+EXPOSE 22 10081 10082 80
 
 # script de lancement des services et d affichage de l'accueil
 COPY services.sh /root/services.sh
