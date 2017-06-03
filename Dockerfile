@@ -15,7 +15,7 @@ ENV password_ssh="docker"
 RUN (apt-get update && apt-get upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
  
 # Installation des paquets de base
-RUN apt-get install -y -q wget nano zip openssh-server
+RUN apt-get install -y -q wget sudo nano zip git openssh-server
 
 # Installation de MySQL
 RUN echo "mysql-server-5.7 mysql-server/root_password password ${password_mysql}" | debconf-set-selections
