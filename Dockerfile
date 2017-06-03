@@ -15,7 +15,7 @@ ENV password_ssh="docker"
 RUN (apt-get update && apt-get upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
  
 # Installation des paquets de base
-RUN apt-get install -y -q wget nano zip openssh-server git
+RUN apt-get install -y -q wget nano sudo zip openssh-server git
 
 # Ajout du depot Zend Server
 RUN echo "deb http://repos.zend.com/zend-server/9.0/deb_apache2.4 server non-free" >> /etc/apt/sources.list
@@ -32,7 +32,7 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_s
 RUN echo "${login_ssh}:${password_ssh}" | chpasswd
 
 # Ports
-EXPOSE 22 10081 10082 80
+EXPOSE 22 10081 10082 8000 80
 
 # script de lancement des services et d affichage de l'accueil
 COPY services.sh /root/services.sh
