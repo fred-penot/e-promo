@@ -21,6 +21,7 @@ RUN apt-get install -y -q wget nano zip openssh-server
 RUN echo "mysql-server-5.7 mysql-server/root_password password ${password_mysql}" | debconf-set-selections
 RUN echo "mysql-server-5.7 mysql-server/root_password_again password ${password_mysql}" | debconf-set-selections
 RUN apt-get -y -q install mysql-server-5.7
+RUN usermod -d /var/lib/mysql/ mysql
 
 # Ajout utilisateur "${login_ssh}"
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_ssh} --gecos "User" ${login_ssh}
