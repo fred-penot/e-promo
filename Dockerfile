@@ -25,18 +25,27 @@ RUN apt-get update
 # Installation de Zend Server
 RUN apt-get install -y -q zend-server-php-7.0
 
-# Installation d e-promo
-RUN mkdir -p /home/docker/app
-RUN cd /home/docker/app
-RUN wget https://symfony.com/installer
-RUN mv -f installer symfony
-RUN /usr/local/zend/bin/php symfony new epromo
-
 # Ajout utilisateur "${login_ssh}"
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_ssh} --gecos "User" ${login_ssh}
 
 # Modification du mot de passe pour "${login_ssh}"
 RUN echo "${login_ssh}:${password_ssh}" | chpasswd
+
+# Installation d e-promo
+RUN cd /home/docker/
+RUN mkdir app
+RUN chmod 755 -Rf /home/docker/app
+RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
+RUN cd /home/docker/app
+RUN wget https://symfony.com/installer
+RUN chmod 755 -Rf /home/docker/app
+RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
+RUN mv -f installer /home/docker/app/symfony
+RUN chmod 755 -Rf /home/docker/app
+RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
+RUN /usr/local/zend/bin/php symfony new epromo
+RUN chmod 755 -Rf /home/docker/app
+RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
 
 # Ports
 EXPOSE 22 10081 10082 9945 80
