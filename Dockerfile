@@ -32,20 +32,10 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_s
 RUN echo "${login_ssh}:${password_ssh}" | chpasswd
 
 # Installation d e-promo
-RUN cd /home/docker/
-RUN mkdir app
-RUN chmod 755 -Rf /home/docker/app
-RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
-RUN cd /home/docker/app
-RUN wget https://symfony.com/installer
-RUN chmod 755 -Rf /home/docker/app
-RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
-RUN mv -f installer /home/docker/app/symfony
-RUN chmod 755 -Rf /home/docker/app
-RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
-RUN /usr/local/zend/bin/php symfony new epromo
-RUN chmod 755 -Rf /home/docker/app
-RUN chown -Rf ${login_ssh}:${login_ssh} /home/docker/app
+COPY install.sh /home/docker/install.sh
+RUN chmod -f 755 /home/docker/install.sh
+RUN chown -f ${login_ssh}:${login_ssh} /home/docker/install.sh
+RUN sh /home/docker/install.sh
 
 # Ports
 EXPOSE 22 10081 10082 9945 80
