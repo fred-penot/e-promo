@@ -32,9 +32,6 @@ RUN echo "${login_ssh}:${password_ssh}" | chpasswd
 # Ports
 EXPOSE 22 3306 80
 
-# script de lancement des services et d affichage de l'accueil
-COPY services.sh /root/services.sh
-RUN chmod -f 755 /root/services.sh
-
-# Ajout du script services.sh au demarrage
-RUN echo "sh /root/services.sh" >> /root/.bashrc
+# Ajout du lancement des services au demarrage
+RUN echo "service ssh start" >> /root/.bashrc
+RUN echo "service mysql start" >> /root/.bashrc
