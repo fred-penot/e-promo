@@ -26,6 +26,7 @@ RUN usermod -d /var/lib/mysql/ mysql
 # Modification de la configuration mysql pour autoriser les connexions exterieures
 RUN rm -f /etc/mysql/mysql.conf.d/mysqld.cnf
 COPY mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+RUN chmod -f 644 /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # Ajout utilisateur "${login_ssh}"
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_ssh} --gecos "User" ${login_ssh}
