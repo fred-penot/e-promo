@@ -1,4 +1,4 @@
-# Zend-server(Apache 2.4 & PHP7) sur Ubuntu
+# Zend-server (Apache 2.4 & PHP7) sur Ubuntu
 #
 # VERSION               0.0.1
 #
@@ -15,7 +15,7 @@ ENV password_ssh="docker"
 RUN (apt-get update && apt-get upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
  
 # Installation des paquets de base
-RUN apt-get install -y -q wget nano sudo zip openssh-server git
+RUN apt-get install -y -q wget sudo nano zip openssh-server git
 
 # Ajout du depot Zend Server
 RUN echo "deb http://repos.zend.com/zend-server/9.0/deb_apache2.4 server non-free" >> /etc/apt/sources.list
@@ -25,6 +25,12 @@ RUN apt-get update
 # Installation de Zend Server
 RUN apt-get install -y -q zend-server-php-7.0
 
+# Installation d e-promo
+RUN mkdir -p /home/docker/app
+RUN wget https://symfony.com/installer
+RUN mv -f installer /home/docker/app/symfony
+RUN /usr/local/zend/bin/php symfony new epromo
+
 # Ajout utilisateur "${login_ssh}"
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_ssh} --gecos "User" ${login_ssh}
 
@@ -32,11 +38,11 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_s
 RUN echo "${login_ssh}:${password_ssh}" | chpasswd
 
 # Ports
-EXPOSE 22 10081 10082 8000 80
+EXPOSE 22 10081 10082 9945 80
 
-# script de lancement des services et d affichage de l'accueil
-COPY services.sh /root/services.sh
-RUN chmod -f 755 /root/services.sh
+# Ajout des services a lancer au demarrage
+RUN echo "service ssh start" >> /root/.bashrc
+RUN echo "service zend-server start" >> /root/.bashrc
 
-# Ajout du script services.sh au demarrage
-RUN echo "sh /root/services.sh" >> /root/.bashrc
+# Lancement d e-promo au demarrage
+RUN echo "/usr/local/zend/bin/php /home/docker/app/epromo/bin/console server:run 172.41.0.2:9945" >> /root/.bashrc
