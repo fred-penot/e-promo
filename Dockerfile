@@ -27,8 +27,9 @@ RUN apt-get install -y -q zend-server-php-7.0
 
 # Installation d e-promo
 RUN mkdir -p /home/docker/app
+RUN cd /home/docker/app
 RUN wget https://symfony.com/installer
-RUN mv -f installer /home/docker/app/symfony
+RUN mv -f installer symfony
 RUN /usr/local/zend/bin/php symfony new epromo
 
 # Ajout utilisateur "${login_ssh}"
