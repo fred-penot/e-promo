@@ -45,6 +45,6 @@ RUN echo "service ssh start" >> /root/.bashrc
 RUN echo "service zend-server start" >> /root/.bashrc
 
 # Lancement d e-promo au demarrage
-RUN echo "/usr/local/zend/bin/php /home/docker/app/epromo/bin/console server:run 172.41.0.2:9945" >> /root/.bashrc
-RUN echo "chown -Rf ${login_ssh}:${login_ssh} /home/docker/app/epromo" >> /root/.bashrc
-RUN echo "chmod -Rf 777 /home/docker/app/epromo" >> /root/.bashrc
+RUN echo "/usr/local/zend/bin/php /home/docker/app/epromo/bin/console server:run 172.41.0.2:9945" >> /home/docker/.bashrc
+RUN echo "chown -Rf ${login_ssh}:${login_ssh} /home/docker/app/epromo" >> /home/docker/.bashrc
+RUN echo "chmod -Rf 777 /home/docker/app/epromo" >> /home/docker/.bashrc
