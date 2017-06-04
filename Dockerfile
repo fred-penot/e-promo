@@ -15,13 +15,17 @@ ENV password_ssh="docker"
 RUN (apt-get update && apt-get upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
  
 # Installation des paquets de base
-RUN apt-get install -y -q wget sudo nano zip git openssh-server
+RUN apt-get install -y -q wget nano zip openssh-server
 
 # Installation de MySQL
 RUN echo "mysql-server-5.7 mysql-server/root_password password ${password_mysql}" | debconf-set-selections
 RUN echo "mysql-server-5.7 mysql-server/root_password_again password ${password_mysql}" | debconf-set-selections
 RUN apt-get -y -q install mysql-server-5.7
 RUN usermod -d /var/lib/mysql/ mysql
+
+# Modification de la configuration mysql pour autoriser les connexions exterieures
+RUN rm -f /etc/mysql/mysql.conf.d/mysqld.cnf
+COPY mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # Ajout utilisateur "${login_ssh}"
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_ssh} --gecos "User" ${login_ssh}
@@ -32,6 +36,9 @@ RUN echo "${login_ssh}:${password_ssh}" | chpasswd
 # Ports
 EXPOSE 22 3306 80
 
-# Ajout du lancement des services au demarrage
-RUN echo "service ssh start" >> /root/.bashrc
-RUN echo "service mysql start" >> /root/.bashrc
+# script de lancement des services et d affichage de l'accueil
+COPY services.sh /root/services.sh
+RUN chmod -f 755 /root/services.sh
+
+# Ajout du script services.sh au demarrage
+RUN echo "sh /root/services.sh" >> /root/.bashrc
