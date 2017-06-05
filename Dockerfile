@@ -22,8 +22,8 @@ RUN echo "deb http://repos.zend.com/zend-server/9.0/deb_apache2.4 server non-fre
 RUN wget http://repos.zend.com/zend.key -O- |apt-key add -
 RUN apt-get update
 
-# Installation de Zend Server
-RUN apt-get install -y -q zend-server-php-7.0
+# Installation de Zend Server et mysql-client
+RUN apt-get install -y -q zend-server-php-7.0 mysql-client-5.7
 
 # Ajout utilisateur "${login_ssh}"
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/${login_ssh} --gecos "User" ${login_ssh}
@@ -48,3 +48,7 @@ RUN echo "service zend-server start" >> /root/.bashrc
 RUN echo "/usr/local/zend/bin/php /home/docker/app/epromo/bin/console server:run 172.41.0.2:9945" >> /home/docker/.bashrc
 RUN echo "chown -Rf ${login_ssh}:${login_ssh} /home/docker/app/epromo" >> /home/docker/.bashrc
 RUN echo "chmod -Rf 777 /home/docker/app/epromo" >> /home/docker/.bashrc
+
+USER docker
+
+WORKDIR /home/docker
